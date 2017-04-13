@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_item_open_file"
+            android:checked="true"
+            android:icon="@drawable/ic_documents"
+            android:title="@string/drawer_item_open_file" />
+        <item
+            android:id="@+id/drawer_item_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/drawer_item_settings" />
+    </group>
+    <item android:title="@string/drawer_item_other"
+        android:checkableBehavior="none">
+        <menu android:checkableBehavior="none">
+            <item
+                android:checkableBehavior="none"
+                android:id="@+id/drawer_item_about_this_app"
+                android:icon="@drawable/ic_credentials"
+                android:title="@string/drawer_item_about_this_app" />
+            <item
+                android:id="@+id/drawer_item_exit"
+                android:icon="@drawable/ic_exit"
+                android:title="@string/drawer_item_exit" />
+        </menu>
+    </item>
+
+</menu>

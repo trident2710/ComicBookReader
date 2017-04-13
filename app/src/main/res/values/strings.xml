@@ -12,6 +12,12 @@
     <string name="fragment_navigation_tab">Navigation tab fragment</string>
     <string name="fragment_singlepage">Single page fragment</string>
 
+    <string name="drawer_item_other">Other</string>
+    <string name="drawer_item_open_file">Open file</string>
+    <string name="drawer_item_settings">Settings</string>
+    <string name="drawer_item_about_this_app">About this app</string>
+    <string name="drawer_item_exit">Exit</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
