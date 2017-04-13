@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ComicBookReader</string>
+
+    <string name="activity_about">About this App</string>
+    <string name="activity_file_choose">Choose file</string>
+    <string name="activity_main">Single page view</string>
+    <string name="activity_multipage">Multiple pages view</string>
+    <string name="activity_settings">Settings</string>
+
+
+    <string name="fragment_multipage">Multiple pages fragment</string>
+    <string name="fragment_navigation_tab">Navigation tab fragment</string>
+    <string name="fragment_singlepage">Single page fragment</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
