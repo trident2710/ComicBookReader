@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dev.trident.comicbookreader.R;
+import com.dev.trident.comicbookreader.fragments.multiplepageview.presenter.MultipageFragmentPresenter;
+import com.dev.trident.comicbookreader.fragments.multiplepageview.presenter.MultipageFragmentPresenterImpl;
+import com.dev.trident.comicbookreader.fragments.multiplepageview.view.MultipageFragmentView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +21,7 @@ import com.dev.trident.comicbookreader.R;
  * Use the {@link MultipageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MultipageFragment extends Fragment {
+public class MultipageFragment extends Fragment implements MultipageFragmentView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +32,15 @@ public class MultipageFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private MultipageFragmentPresenter multipageFragmentPresenter;
+    /**
+     * Initialisation of key components of this activity
+     * Should be called in onAttach()
+     */
+    void init(){
+        multipageFragmentPresenter = new MultipageFragmentPresenterImpl(this);
+    }
 
     public MultipageFragment() {
         // Required empty public constructor
@@ -65,6 +77,7 @@ public class MultipageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_multipage, container, false);
     }
 
@@ -78,6 +91,7 @@ public class MultipageFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        init();
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

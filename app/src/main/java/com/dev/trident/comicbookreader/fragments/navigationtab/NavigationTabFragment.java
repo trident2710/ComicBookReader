@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dev.trident.comicbookreader.R;
+import com.dev.trident.comicbookreader.fragments.navigationtab.presenter.NavigationTabFragmentPresenter;
+import com.dev.trident.comicbookreader.fragments.navigationtab.presenter.NavigationTabFragmentPresenterImpl;
+import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTabFragmentView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +21,7 @@ import com.dev.trident.comicbookreader.R;
  * Use the {@link NavigationTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NavigationTabFragment extends Fragment {
+public class NavigationTabFragment extends Fragment implements NavigationTabFragmentView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +32,15 @@ public class NavigationTabFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private NavigationTabFragmentPresenter navigationTabFragmentPresenter;
+    /**
+     * Initialisation of key components of this activity
+     * Should be called in onAttach()
+     */
+    void init(){
+        navigationTabFragmentPresenter = new NavigationTabFragmentPresenterImpl(this);
+    }
 
     public NavigationTabFragment() {
         // Required empty public constructor
@@ -78,6 +90,7 @@ public class NavigationTabFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        init();
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
