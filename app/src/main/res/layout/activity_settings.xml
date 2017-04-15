@@ -25,11 +25,35 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <TextView
-            android:layout_gravity="center"
-            android:text="@string/activity_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:padding="@dimen/activity_padding"
+            android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="@string/settings_image_filtering_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioGroup
+                android:id="@+id/rgFilteringSettingsActivity"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:checked="true"
+                    android:id="@+id/rbFilteringTextSettingsActivity"
+                    android:text="@string/settings_image_filtering_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/rbFilteringImageSettingsActivity"
+                    android:text="@string/settings_image_filtering_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
+        </LinearLayout>
+
 
     </android.support.design.widget.CoordinatorLayout>
 

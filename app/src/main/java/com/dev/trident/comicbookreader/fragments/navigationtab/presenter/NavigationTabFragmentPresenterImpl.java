@@ -1,5 +1,7 @@
 package com.dev.trident.comicbookreader.fragments.navigationtab.presenter;
 
+import com.dev.trident.comicbookreader.MVPBasic.BasicView;
+import com.dev.trident.comicbookreader.fragments.multiplepageview.view.MultipageFragmentView;
 import com.dev.trident.comicbookreader.fragments.navigationtab.model.NavigationTabFragmentModel;
 import com.dev.trident.comicbookreader.fragments.navigationtab.model.NavigationTabFragmentModelImpl;
 import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTabFragmentView;
@@ -14,8 +16,16 @@ public class NavigationTabFragmentPresenterImpl implements NavigationTabFragment
     private NavigationTabFragmentModel navigationTabFragmentModel;
     private NavigationTabFragmentView navigationTabFragmentView;
 
-    public NavigationTabFragmentPresenterImpl(NavigationTabFragmentView navigationTabFragmentView) {
-        this.navigationTabFragmentView = navigationTabFragmentView;
+    public NavigationTabFragmentPresenterImpl() {
         this.navigationTabFragmentModel = new NavigationTabFragmentModelImpl();
+    }
+
+    @Override
+    public void onViewReady(BasicView view) {
+        try {
+            navigationTabFragmentView= (NavigationTabFragmentView) view;
+        } catch (Exception ex){
+            throw new RuntimeException("view must implement NavigationTabFragmentView");
+        }
     }
 }

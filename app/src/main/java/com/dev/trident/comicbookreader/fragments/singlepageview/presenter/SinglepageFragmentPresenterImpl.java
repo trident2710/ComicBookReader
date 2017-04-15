@@ -1,5 +1,7 @@
 package com.dev.trident.comicbookreader.fragments.singlepageview.presenter;
 
+import com.dev.trident.comicbookreader.MVPBasic.BasicView;
+import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTabFragmentView;
 import com.dev.trident.comicbookreader.fragments.singlepageview.view.SinglepageFragmentView;
 
 /**
@@ -11,7 +13,15 @@ import com.dev.trident.comicbookreader.fragments.singlepageview.view.SinglepageF
 public class SinglepageFragmentPresenterImpl implements SinglepageFragmentPresenter {
     private SinglepageFragmentView singlepageFragmentView;
 
-    public SinglepageFragmentPresenterImpl(SinglepageFragmentView singlepageFragmentView) {
-        this.singlepageFragmentView = singlepageFragmentView;
+    public SinglepageFragmentPresenterImpl() {
+    }
+
+    @Override
+    public void onViewReady(BasicView view) {
+        try {
+            singlepageFragmentView= (SinglepageFragmentView) view;
+        } catch (Exception ex){
+            throw new RuntimeException("view must implement SinglepageFragmentView");
+        }
     }
 }

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="filepicker-2.0.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/0f150cc6033eea6ec0e569a18962d8aa5e6f989e/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/0f150cc6033eea6ec0e569a18962d8aa5e6f989e/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar:///usr/local/Cellar/gradle/2.9/libexec/caches/modules-2/files-2.1/com.droidninja/filepicker/2.0.3/17929e37fab432c2dc4aff4cf154e46ee142ad8/filepicker-2.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

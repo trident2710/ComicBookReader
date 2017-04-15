@@ -1,5 +1,7 @@
 package com.dev.trident.comicbookreader.fragments.multiplepageview.presenter;
 
+import com.dev.trident.comicbookreader.MVPBasic.BasicView;
+import com.dev.trident.comicbookreader.activities.multipage.view.MultipageView;
 import com.dev.trident.comicbookreader.fragments.multiplepageview.view.MultipageFragmentView;
 
 /**
@@ -11,7 +13,15 @@ import com.dev.trident.comicbookreader.fragments.multiplepageview.view.Multipage
 public class MultipageFragmentPresenterImpl implements MultipageFragmentPresenter {
     private MultipageFragmentView multipageFragmentView;
 
-    public MultipageFragmentPresenterImpl(MultipageFragmentView multipageFragmentView) {
-        this.multipageFragmentView = multipageFragmentView;
+    public MultipageFragmentPresenterImpl() {
+    }
+
+    @Override
+    public void onViewReady(BasicView view) {
+        try {
+            multipageFragmentView = (MultipageFragmentView) view;
+        } catch (Exception ex){
+            throw new RuntimeException("view must implement MultipageFragmentView");
+        }
     }
 }

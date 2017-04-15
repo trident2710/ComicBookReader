@@ -1,5 +1,7 @@
 package com.dev.trident.comicbookreader.activities.multipage.presenter;
 
+import com.dev.trident.comicbookreader.MVPBasic.BasicView;
+import com.dev.trident.comicbookreader.activities.filechoose.view.FileChooseView;
 import com.dev.trident.comicbookreader.activities.multipage.model.MultipageModel;
 import com.dev.trident.comicbookreader.activities.multipage.model.MultipageModelImpl;
 import com.dev.trident.comicbookreader.activities.multipage.view.MultipageView;
@@ -14,8 +16,16 @@ public class MultipagePresenterImpl implements MultipagePresenter {
     private MultipageModel multipageModel;
     private MultipageView multipageView;
 
-    public MultipagePresenterImpl(MultipageView multipageView) {
-        this.multipageView = multipageView;
+    public MultipagePresenterImpl() {
         this.multipageModel = new MultipageModelImpl();
+    }
+
+    @Override
+    public void onViewReady(BasicView view) {
+        try {
+            multipageView = (MultipageView) view;
+        } catch (Exception ex){
+            throw new RuntimeException("view must implement MultipageView");
+        }
     }
 }

@@ -1,6 +1,9 @@
 package com.dev.trident.comicbookreader.activities.main.presenter;
 
+import com.dev.trident.comicbookreader.MVPBasic.BasicView;
+import com.dev.trident.comicbookreader.activities.filechoose.view.FileChooseView;
 import com.dev.trident.comicbookreader.activities.main.model.MainModel;
+import com.dev.trident.comicbookreader.activities.main.model.MainModelImpl;
 import com.dev.trident.comicbookreader.activities.main.view.MainView;
 
 /**
@@ -13,7 +16,16 @@ public class MainPresenterImpl implements MainPresenter {
     private MainModel mainModel;
     private MainView mainView;
 
-    public MainPresenterImpl(MainView mainView) {
-        this.mainView = mainView;
+    public MainPresenterImpl() {
+        this.mainModel = new MainModelImpl();
+    }
+
+    @Override
+    public void onViewReady(BasicView view) {
+        try {
+            mainView= (MainView) view;
+        } catch (Exception ex){
+            throw new RuntimeException("view must implement MainView");
+        }
     }
 }

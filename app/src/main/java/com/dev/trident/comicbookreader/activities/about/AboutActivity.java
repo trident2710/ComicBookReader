@@ -1,22 +1,31 @@
 package com.dev.trident.comicbookreader.activities.about;
 
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.dev.trident.comicbookreader.R;
-import com.dev.trident.comicbookreader.activities.about.presenter.AboutPresenter;
-import com.dev.trident.comicbookreader.activities.about.presenter.AboutPresenterImpl;
-import com.dev.trident.comicbookreader.activities.about.view.AboutView;
 
-public class AboutActivity extends AppCompatActivity implements AboutView{
+public class AboutActivity extends AppCompatActivity {
 
-    private AboutPresenter aboutPresenter;
+
     /**
      * Initialisation of key components of this activity
      * Should be called in onCreate()
      */
     void init(){
-        aboutPresenter = new AboutPresenterImpl(this);
+        setSupportActionBar((Toolbar)findViewById(R.id.tbAboutActivity));
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        NavUtils.navigateUpFromSameTask(this);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

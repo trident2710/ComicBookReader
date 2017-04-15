@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dev.trident.comicbookreader">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,10 +18,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.about.AboutActivity" />
-        <activity android:name=".activities.filechoose.FileChooseActivity" />
-        <activity android:name=".activities.multipage.MultipageActivity" />
-        <activity android:name=".activities.settings.SettingsActivity"></activity>
+        <activity android:name=".activities.about.AboutActivity"
+            android:label="@string/activity_about"
+            android:parentActivityName=".activities.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.main.MainActivity" />
+        </activity>
+        <activity android:name=".activities.filechoose.FileChooseActivity"
+            android:label="@string/activity_file_choose"
+            android:parentActivityName=".activities.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.main.MainActivity" />
+        </activity>
+        <activity android:name=".activities.multipage.MultipageActivity"
+            android:label="@string/activity_multipage"
+            android:parentActivityName=".activities.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.main.MainActivity" />
+        </activity>
+        <activity android:name=".activities.settings.SettingsActivity"
+            android:label="@string/activity_settings"
+            android:parentActivityName=".activities.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
