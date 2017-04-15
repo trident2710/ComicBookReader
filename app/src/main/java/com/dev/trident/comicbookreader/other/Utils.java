@@ -14,10 +14,12 @@ import android.support.v7.app.AlertDialog;
 import android.view.Display;
 import android.view.Surface;
 
+import java.security.MessageDigest;
+
 /**
  * trident 25.02.16.
  */
-public class Utils {
+public final class Utils {
 
 
     public interface BinaryActionListener{
@@ -104,6 +106,38 @@ public class Utils {
     {
         int result = context.checkCallingOrSelfPermission(permission);
         return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean isImage(String filename) {
+        return filename.toLowerCase().matches(".*\\.(jpg|jpeg|bmp|gif|png|webp)$");
+    }
+
+    public static boolean isZip(String filename) {
+        return filename.toLowerCase().matches(".*\\.(zip|cbz)$");
+    }
+
+    public static boolean isRar(String filename) {
+        return filename.toLowerCase().matches(".*\\.(rar|cbr)$");
+    }
+
+    public static String MD5(String string) {
+        try {
+            byte[] strBytes = string.getBytes();
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            byte[] digest = messageDigest.digest(strBytes);
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < digest.length; ++i) {
+                sb.append(Integer.toHexString((digest[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString();
+        }
+        catch (java.security.NoSuchAlgorithmException e) {
+            return string.replace("/", ".");
+        }
+    }
+
+    public static String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
     }
 
 
