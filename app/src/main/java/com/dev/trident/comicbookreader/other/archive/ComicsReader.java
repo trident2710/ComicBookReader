@@ -76,8 +76,9 @@ public abstract class ComicsReader {
     };
 
 
-    public ComicsReader(String filePath){
+    public ComicsReader(String filePath) throws Exception{
         this.filePath = filePath;
         this.fileName = filePath;
+
     }
 }

@@ -22,4 +22,20 @@ public interface BasicView {
      * return the context of this view
      */
     Context getContext();
+
+    /**
+     * display the message to user on the screen
+     * @param msg - error message
+     * @param type -message type
+     * @see MessageType
+     */
+    void showMessage(MessageType type, String msg);
+
+    /**
+     * display the message to user on the screen
+     * @param msgStringId - error message string id
+     * @param type -message type
+     * @see MessageType
+     */
+    void showMessage(MessageType type, int msgStringId);
 }

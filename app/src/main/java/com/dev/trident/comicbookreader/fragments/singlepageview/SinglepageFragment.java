@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.fragments.singlepageview.presenter.SinglepageFragmentPresenter;
 import com.dev.trident.comicbookreader.fragments.singlepageview.presenter.SinglepageFragmentPresenterImpl;
@@ -83,5 +85,15 @@ public class SinglepageFragment extends Fragment implements SinglepageFragmentVi
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void showMessage(MessageType type, String msg) {
+        Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessage(MessageType type, int msgStringId) {
+        Toast.makeText(getContext(),getString(msgStringId),Toast.LENGTH_SHORT).show();
     }
 }

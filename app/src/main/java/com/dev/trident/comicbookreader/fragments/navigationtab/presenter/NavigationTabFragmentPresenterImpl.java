@@ -1,7 +1,6 @@
 package com.dev.trident.comicbookreader.fragments.navigationtab.presenter;
 
 import com.dev.trident.comicbookreader.MVPBasic.BasicView;
-import com.dev.trident.comicbookreader.fragments.multiplepageview.view.MultipageFragmentView;
 import com.dev.trident.comicbookreader.fragments.navigationtab.model.NavigationTabFragmentModel;
 import com.dev.trident.comicbookreader.fragments.navigationtab.model.NavigationTabFragmentModelImpl;
 import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTabFragmentView;

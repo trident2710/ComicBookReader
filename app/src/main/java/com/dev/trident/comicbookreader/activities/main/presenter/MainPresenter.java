@@ -8,5 +8,15 @@ import com.dev.trident.comicbookreader.MVPBasic.BasicPresenter;
  */
 
 public interface MainPresenter extends BasicPresenter{
+    /**
+     * request to open the file by it's path
+     * @param filePath - the path of this file
+     */
+    void requestOpenFile(String filePath);
 
+    /**
+     * request to open the page
+     * @param pageNum - the number of page
+     */
+    void requestPage(int pageNum);
 }

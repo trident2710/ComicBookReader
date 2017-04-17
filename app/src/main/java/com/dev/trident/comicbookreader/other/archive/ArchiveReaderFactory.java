@@ -13,7 +13,7 @@ public class ArchiveReaderFactory {
      * Get the necessary reader based on the file extension
      * @param filePath - path to the file
      * @return @see ComicsReader
-     * @throws Exception if the file extension does not match any supported 
+     * @throws Exception if the file extension does not match any supported
      */
     public static ComicsReader getReader(String filePath) throws Exception{
         switch (Utils.getFileExtension(filePath)){

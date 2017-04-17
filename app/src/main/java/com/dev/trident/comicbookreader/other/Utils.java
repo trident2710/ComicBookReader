@@ -1,6 +1,5 @@
 package com.dev.trident.comicbookreader.other;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.view.Display;

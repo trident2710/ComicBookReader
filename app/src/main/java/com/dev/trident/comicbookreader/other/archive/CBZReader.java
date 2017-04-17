@@ -18,8 +18,9 @@ public class CBZReader extends ComicsReader {
     private ZipFile mZipFile;
     private ArrayList<ZipEntry> mEntries;
 
-    public CBZReader(String path){
+    public CBZReader(String path) throws Exception{
         super(path);
+        readHeader();
     }
 
     @Override

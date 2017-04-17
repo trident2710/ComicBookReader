@@ -1,13 +1,14 @@
 package com.dev.trident.comicbookreader.fragments.navigationtab;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.fragments.navigationtab.presenter.NavigationTabFragmentPresenter;
 import com.dev.trident.comicbookreader.fragments.navigationtab.presenter.NavigationTabFragmentPresenterImpl;
@@ -16,17 +17,18 @@ import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTa
 /**
 
  */
-public class NavigationTabFragment extends Fragment implements NavigationTabFragmentView{
+public class NavigationTabFragment extends Fragment implements NavigationTabFragmentView {
 
     private OnFragmentInteractionListener mListener;
 
     private NavigationTabFragmentPresenter navigationTabFragmentPresenter;
+
     /**
      * Initialisation of key components of this activity
      * Should be called in onAttach()
      */
     @Override
-    public void init(){
+    public void init() {
         setPresenter();
         navigationTabFragmentPresenter.onViewReady(this);
     }
@@ -57,7 +59,6 @@ public class NavigationTabFragment extends Fragment implements NavigationTabFrag
     }
 
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -84,5 +85,15 @@ public class NavigationTabFragment extends Fragment implements NavigationTabFrag
 
     public interface OnFragmentInteractionListener {
 
+    }
+
+    @Override
+    public void showMessage(MessageType type, String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessage(MessageType type, int msgStringId) {
+        Toast.makeText(getContext(), getContext().getString(msgStringId), Toast.LENGTH_SHORT).show();
     }
 }

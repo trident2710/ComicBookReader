@@ -1,7 +1,6 @@
 package com.dev.trident.comicbookreader.activities.multipage.presenter;
 
 import com.dev.trident.comicbookreader.MVPBasic.BasicView;
-import com.dev.trident.comicbookreader.activities.filechoose.view.FileChooseView;
 import com.dev.trident.comicbookreader.activities.multipage.model.MultipageModel;
 import com.dev.trident.comicbookreader.activities.multipage.model.MultipageModelImpl;
 import com.dev.trident.comicbookreader.activities.multipage.view.MultipageView;

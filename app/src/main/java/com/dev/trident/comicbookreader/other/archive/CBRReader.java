@@ -1,5 +1,7 @@
 package com.dev.trident.comicbookreader.other.archive;
 
+import android.util.Log;
+
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.junrar.Archive;
 import com.github.junrar.exception.RarException;
@@ -18,13 +20,16 @@ import java.util.ArrayList;
 
 public class CBRReader extends ComicsReader {
 
-    private ArrayList<FileHeader> mHeaders = new ArrayList<FileHeader>();
+    private ArrayList<FileHeader> mHeaders;
     private Archive mArchive;
     private File mCacheDir;
     private boolean mSolidFileExtracted = false;
 
-    public CBRReader(String path){
+    public CBRReader(String path) throws Exception{
         super(path);
+        mHeaders = new ArrayList<FileHeader>();
+        readHeader();
+
     }
 
     @Override

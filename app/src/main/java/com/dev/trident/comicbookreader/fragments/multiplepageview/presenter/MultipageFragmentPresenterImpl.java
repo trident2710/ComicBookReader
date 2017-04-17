@@ -1,7 +1,6 @@
 package com.dev.trident.comicbookreader.fragments.multiplepageview.presenter;
 
 import com.dev.trident.comicbookreader.MVPBasic.BasicView;
-import com.dev.trident.comicbookreader.activities.multipage.view.MultipageView;
 import com.dev.trident.comicbookreader.fragments.multiplepageview.view.MultipageFragmentView;
 
 /**

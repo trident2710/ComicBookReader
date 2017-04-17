@@ -9,11 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
+import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsFiltering;
 import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsPresenter;
 import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsPresenterImpl;
-import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsFiltering;
 import com.dev.trident.comicbookreader.activities.settings.view.SettingsView;
 
 import butterknife.Bind;
@@ -76,5 +78,15 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView,
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public void showMessage(MessageType type, String msg) {
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessage(MessageType type, int msgStringId) {
+        Toast.makeText(this,getString(msgStringId),Toast.LENGTH_SHORT).show();
     }
 }

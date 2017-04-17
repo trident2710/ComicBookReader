@@ -6,7 +6,9 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.activities.multipage.presenter.MultipagePresenter;
 import com.dev.trident.comicbookreader.activities.multipage.presenter.MultipagePresenterImpl;
@@ -50,5 +52,15 @@ public class MultipageActivity extends AppCompatActivity implements MultipageVie
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public void showMessage(MessageType type, String msg) {
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessage(MessageType type, int msgStringId) {
+        Toast.makeText(this,getString(msgStringId),Toast.LENGTH_SHORT).show();
     }
 }

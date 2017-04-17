@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -21,12 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
+import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.activities.about.AboutActivity;
-import com.dev.trident.comicbookreader.activities.filechoose.FileChooseActivity;
 import com.dev.trident.comicbookreader.activities.main.presenter.ComicsType;
 import com.dev.trident.comicbookreader.activities.main.presenter.MainPresenter;
 import com.dev.trident.comicbookreader.activities.main.presenter.MainPresenterImpl;
@@ -38,8 +35,8 @@ import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTa
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.clans.fab.FloatingActionButton;
 
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -194,6 +191,16 @@ public class MainActivity extends AppCompatActivity implements MainView,
         return this;
     }
 
+    @Override
+    public void showMessage(MessageType type, String msg) {
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessage(MessageType type, int msgStringId) {
+        Toast.makeText(this,getString(msgStringId),Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -206,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                     ArrayList<String> docPaths = new ArrayList<>();
                     docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
                     Log.d(TAG,"path: "+docPaths.get(0));
+                    mainPresenter.requestOpenFile(docPaths.get(0));
                 }
                 break;
         }
@@ -238,4 +246,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
         }
     }
 
+    @Override
+    public void showFile(String fileName, int pageCount) {
+        Toast.makeText(this,"show file: "+fileName+" with page count: "+pageCount,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showPage(int pageNum, InputStream pageStream) {
+        Toast.makeText(this,"show page: "+pageNum,Toast.LENGTH_SHORT).show();
+    }
 }
