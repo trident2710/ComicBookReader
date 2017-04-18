@@ -7,30 +7,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
-import com.dev.trident.comicbookreader.fragments.multiplepageview.presenter.MultipageFragmentPresenter;
-import com.dev.trident.comicbookreader.fragments.multiplepageview.presenter.MultipageFragmentPresenterImpl;
-import com.dev.trident.comicbookreader.fragments.multiplepageview.view.MultipageFragmentView;
 
 /**
 
  */
-public class MultipageFragment extends Fragment implements MultipageFragmentView{
+public class MultipageFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
-    private MultipageFragmentPresenter multipageFragmentPresenter;
+
     /**
      * Initialisation of key components of this activity
      * Should be called in onAttach()
      */
-    @Override
     public void init(){
-        setPresenter();
-        multipageFragmentPresenter.onViewReady(this);
     }
 
     public MultipageFragment() {
@@ -81,23 +72,10 @@ public class MultipageFragment extends Fragment implements MultipageFragmentView
         mListener = null;
     }
 
-    @Override
-    public void setPresenter() {
-        multipageFragmentPresenter = new MultipageFragmentPresenterImpl();
-    }
-
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 
-    @Override
-    public void showMessage(MessageType type, String msg) {
-        Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void showMessage(MessageType type, int msgStringId) {
-        Toast.makeText(getContext(),getContext().getString(msgStringId),Toast.LENGTH_SHORT).show();
-    }
 }

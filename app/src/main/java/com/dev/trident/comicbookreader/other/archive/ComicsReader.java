@@ -81,4 +81,6 @@ public abstract class ComicsReader {
         this.fileName = filePath;
 
     }
+
+    public abstract void destroy() throws IOException;
 }

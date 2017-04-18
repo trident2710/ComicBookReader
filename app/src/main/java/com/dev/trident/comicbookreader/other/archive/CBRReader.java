@@ -1,7 +1,5 @@
 package com.dev.trident.comicbookreader.other.archive;
 
-import android.util.Log;
-
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.junrar.Archive;
 import com.github.junrar.exception.RarException;
@@ -117,5 +115,27 @@ public class CBRReader extends ComicsReader {
         catch (RarException e) {
             throw new IOException("unable to parse rar");
         }
+    }
+
+    public void setCacheDirectory(File cacheDirectory) {
+        mCacheDir = cacheDirectory;
+        if (!mCacheDir.exists()) {
+            mCacheDir.mkdir();
+        }
+        if (mCacheDir.listFiles() != null) {
+            for (File f : mCacheDir.listFiles()) {
+                f.delete();
+            }
+        }
+    }
+
+    public void destroy() throws IOException {
+        if (mCacheDir != null) {
+            for (File f : mCacheDir.listFiles()) {
+                f.delete();
+            }
+            mCacheDir.delete();
+        }
+        mArchive.close();
     }
 }

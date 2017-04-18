@@ -24,6 +24,11 @@ public class CBZReader extends ComicsReader {
     }
 
     @Override
+    public void destroy() throws IOException {
+        mZipFile.close();
+    }
+
+    @Override
     public FileType getFileType() {
         return FileType.CBZ;
     }
@@ -52,4 +57,6 @@ public class CBZReader extends ComicsReader {
             }
         }
     }
+
+
 }

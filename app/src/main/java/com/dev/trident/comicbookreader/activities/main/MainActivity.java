@@ -12,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -24,18 +25,16 @@ import android.widget.Toast;
 import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.activities.about.AboutActivity;
-import com.dev.trident.comicbookreader.activities.main.presenter.ComicsType;
-import com.dev.trident.comicbookreader.activities.main.presenter.MainPresenter;
-import com.dev.trident.comicbookreader.activities.main.presenter.MainPresenterImpl;
 import com.dev.trident.comicbookreader.activities.main.view.MainView;
 import com.dev.trident.comicbookreader.activities.multipage.MultipageActivity;
 import com.dev.trident.comicbookreader.activities.settings.SettingsActivity;
+import com.dev.trident.comicbookreader.fragments.reader.ReaderFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTabFragmentView;
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.clans.fab.FloatingActionButton;
 
-import java.io.InputStream;
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -60,17 +59,15 @@ public class MainActivity extends AppCompatActivity implements MainView,
     FloatingActionButton fabNavigation;
 
     NavigationTabFragmentView navigationTabFragment;
+    private PagerAdapter mPagerAdapter;
 
 
-    private MainPresenter mainPresenter;
     /**
      * Initialisation of key components of this activity
      * Should be called in onCreate()
      */
-    @Override
     public void init(){
         ButterKnife.bind(this);
-        setPresenter();
         requestReadFilesPermission();
 
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.tbMainActivity);
@@ -87,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 .beginTransaction()
                 .replace(R.id.frNavigationMainActivity, (Fragment) navigationTabFragment)
                 .commit();
-        mainPresenter.onViewReady(this);
 
     }
 
@@ -95,7 +91,14 @@ public class MainActivity extends AppCompatActivity implements MainView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Utils.setScreenOrientationLocked(this,true);
         init();
+
+        ReaderFragment fragment = ReaderFragment.create(new File("/storage/emulated/0/Download/sample.cbr"));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frReader,fragment)
+                .commit();
     }
 
     @Override
@@ -126,12 +129,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
         switch (item.getItemId()){
             case R.id.drawer_item_open_file:
                 //Toast.makeText(this,"Open file",Toast.LENGTH_SHORT).show();
-                if(Utils.doesUserHavePermission(getContext(),Manifest.permission.READ_EXTERNAL_STORAGE)){
+                if(Utils.doesUserHavePermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
                     String[] comicsTypes = ComicsType.getAllTypes();
                     FilePickerBuilder.getInstance()
                             .setMaxCount(1)
                             .setActivityTheme(R.style.AppTheme)
-                            .addFileSupport(getContext().getString(R.string.file_choose_comics_label),comicsTypes, R.drawable.ic_archive)
+                            .addFileSupport(this.getString(R.string.file_choose_comics_label),comicsTypes, R.drawable.ic_archive)
                             .enableDocSupport(false)
                             .setSelectedFiles(new ArrayList<String>())
                             .pickFile(MainActivity.this);
@@ -181,22 +184,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
             listener);
     }
 
-    @Override
-    public void setPresenter() {
-        this.mainPresenter = new MainPresenterImpl();
-    }
 
-    @Override
-    public Context getContext() {
-        return this;
-    }
 
-    @Override
     public void showMessage(MessageType type, String msg) {
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
 
-    @Override
     public void showMessage(MessageType type, int msgStringId) {
         Toast.makeText(this,getString(msgStringId),Toast.LENGTH_SHORT).show();
     }
@@ -213,7 +206,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
                     ArrayList<String> docPaths = new ArrayList<>();
                     docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
                     Log.d(TAG,"path: "+docPaths.get(0));
-                    mainPresenter.requestOpenFile(docPaths.get(0));
+                    //mainPresenter.requestOpenFile(MainActivity.this,docPaths.get(0));
+
+
                 }
                 break;
         }
@@ -238,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(MainActivity.this, getContext().getString(R.string.permission_canceled_message), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, this.getString(R.string.permission_canceled_message), Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -246,13 +241,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
         }
     }
 
-    @Override
-    public void showFile(String fileName, int pageCount) {
-        Toast.makeText(this,"show file: "+fileName+" with page count: "+pageCount,Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
-    public void showPage(int pageNum, InputStream pageStream) {
-        Toast.makeText(this,"show page: "+pageNum,Toast.LENGTH_SHORT).show();
+    protected void onSaveInstanceState(Bundle outState) {
+        //super.onSaveInstanceState(outState);
     }
+
+
+
 }
