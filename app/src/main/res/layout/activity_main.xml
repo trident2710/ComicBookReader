@@ -41,13 +41,7 @@
             android:layout_height="wrap_content">
         </android.support.v4.view.ViewPager>
 
-        <FrameLayout
-            android:visibility="gone"
-            android:layout_gravity="center"
-            android:id="@+id/frNavigationMainActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </FrameLayout>
+
 
 
         <FrameLayout
@@ -55,6 +49,14 @@
             android:id="@+id/frReader"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+        </FrameLayout>
+
+        <FrameLayout
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:id="@+id/frNavigationMainActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         </FrameLayout>
 
 

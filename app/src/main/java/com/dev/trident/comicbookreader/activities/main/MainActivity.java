@@ -20,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.dev.trident.comicbookreader.MVPBasic.MessageType;
@@ -30,7 +32,7 @@ import com.dev.trident.comicbookreader.activities.multipage.MultipageActivity;
 import com.dev.trident.comicbookreader.activities.settings.SettingsActivity;
 import com.dev.trident.comicbookreader.fragments.reader.ReaderFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
-import com.dev.trident.comicbookreader.fragments.navigationtab.view.NavigationTabFragmentView;
+import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragmentView;
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -57,9 +59,10 @@ public class MainActivity extends AppCompatActivity implements MainView,
     ViewPager viewPager;
     @Bind(R.id.fabNavigationMainActivity)
     FloatingActionButton fabNavigation;
+    @Bind(R.id.frNavigationMainActivity)
+    FrameLayout navigationTabFragmentView;
 
     NavigationTabFragmentView navigationTabFragment;
-    private PagerAdapter mPagerAdapter;
 
 
     /**
@@ -159,7 +162,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     @OnClick(R.id.fabNavigationMainActivity)
     void onFabNavigationClicked(){
-        Toast.makeText(this,"Navigation",Toast.LENGTH_SHORT).show();
+        if(navigationTabFragmentView.getVisibility()== View.GONE){
+            Toast.makeText(this,"Navigation",Toast.LENGTH_SHORT).show();
+            navigationTabFragment.initWithPageCount(10);
+            navigationTabFragment.setCurrentPage(4);
+        }
+        navigationTabFragmentView.setVisibility(navigationTabFragmentView.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
     }
 
     private void showExitDialog(){
@@ -249,5 +257,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
-
+    @Override
+    public void onPageSelected(int pageNum) {
+        Toast.makeText(this,"Page selected "+pageNum,Toast.LENGTH_SHORT).show();
+    }
 }
