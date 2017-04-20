@@ -3,6 +3,11 @@
               android:layout_width="200dp"
               android:orientation="vertical"
               android:layout_height="match_parent">
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:id="@+id/pageImageViewBetterQuality"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
     <com.dev.trident.comicbookreader.other.view.PageImageView
             android:id="@+id/pageImageView"
             android:layout_width="match_parent"

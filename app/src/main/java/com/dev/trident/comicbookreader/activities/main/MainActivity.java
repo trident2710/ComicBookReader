@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     String filePath;
     boolean shouldCreateFragments = false;
+    boolean settingsChanged = false;
 
 
     /**
@@ -131,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements MainView,
             createFragments(filePath);
             shouldCreateFragments = false;
         }
+        if(settingsChanged&&readerFragment!=null){
+            readerFragment.reloadPages();
+            multipageFragment.reloadPages();
+        }
+        settingsChanged = false;
         super.onResume();
     }
 
@@ -188,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
             case R.id.drawer_item_settings:
                 //Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                settingsChanged = true;
                 return true;
             case R.id.drawer_item_about_this_app:
                 //Toast.makeText(this,"About app",Toast.LENGTH_SHORT).show();

@@ -9,4 +9,5 @@ public interface ReaderFragmentView {
     int getCurrentPage();
     void moveToPage(int page);
     String getFilePath();
+    void reloadPages();
 }

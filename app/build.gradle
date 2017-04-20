@@ -44,4 +44,5 @@ dependencies {
     compile 'com.minimize.library:seekbar-compat:0.2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.pixplicity.multiviewpager:library:1.0'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.6.0'
 }

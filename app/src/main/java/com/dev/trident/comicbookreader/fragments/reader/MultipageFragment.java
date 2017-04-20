@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
 import com.dev.trident.comicbookreader.other.Constants;
@@ -159,6 +161,12 @@ public class MultipageFragment extends Fragment implements ReaderFragmentView{
         return filePath;
     }
 
+    @Override
+    public void reloadPages() {
+        mViewPager.setAdapter(null);
+        mViewPager.setAdapter(mPagerAdapter);
+    }
+
 
     private void setCurrentPage(int page) {
         setCurrentPage(page, true);
@@ -211,15 +219,15 @@ public class MultipageFragment extends Fragment implements ReaderFragmentView{
             mTargets.delete(position);
             container.removeView(layout);
 
-            ImageView iv = (ImageView) layout.findViewById(R.id.pageImageView);
-            Drawable drawable = iv.getDrawable();
-            if (drawable instanceof BitmapDrawable) {
-                BitmapDrawable bd = (BitmapDrawable) drawable;
-                Bitmap bm = bd.getBitmap();
-                if (bm != null) {
-                    bm.recycle();
-                }
-            }
+//            ImageView iv = (ImageView) layout.findViewById(R.id.pageImageView);
+//            Drawable drawable = iv.getDrawable();
+//            if (drawable instanceof BitmapDrawable) {
+//                BitmapDrawable bd = (BitmapDrawable) drawable;
+//                Bitmap bm = bd.getBitmap();
+//                if (bm != null) {
+//                    bm.recycle();
+//                }
+//            }
         }
     }
 
@@ -259,8 +267,8 @@ public class MultipageFragment extends Fragment implements ReaderFragmentView{
                 return;
 
             setVisibility(View.VISIBLE, View.GONE, View.GONE);
-            ImageView iv = (ImageView) layout.findViewById(R.id.pageImageView);
-            iv.setImageBitmap(bitmap);
+            SubsamplingScaleImageView iv = (SubsamplingScaleImageView) layout.findViewById(R.id.pageImageView);
+            iv.setImage(ImageSource.bitmap(bitmap));
         }
 
         @Override

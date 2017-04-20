@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
-import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsFiltering;
+import com.dev.trident.comicbookreader.activities.settings.model.SettingsFiltering;
 import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsPresenter;
 import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsPresenterImpl;
 import com.dev.trident.comicbookreader.activities.settings.view.SettingsView;

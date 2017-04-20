@@ -1,6 +1,7 @@
 package com.dev.trident.comicbookreader.activities.settings.presenter;
 
 import com.dev.trident.comicbookreader.MVPBasic.BasicPresenter;
+import com.dev.trident.comicbookreader.activities.settings.model.SettingsFiltering;
 
 /**
  * trident 13/04/2017.

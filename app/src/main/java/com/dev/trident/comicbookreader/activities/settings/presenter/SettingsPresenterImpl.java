@@ -1,6 +1,7 @@
 package com.dev.trident.comicbookreader.activities.settings.presenter;
 
 import com.dev.trident.comicbookreader.MVPBasic.BasicView;
+import com.dev.trident.comicbookreader.activities.settings.model.SettingsFiltering;
 import com.dev.trident.comicbookreader.activities.settings.model.SettingsModel;
 import com.dev.trident.comicbookreader.activities.settings.model.SettingsModelImpl;
 import com.dev.trident.comicbookreader.activities.settings.view.SettingsView;

@@ -38,7 +38,7 @@
 
     <string name="settings_image_filtering_title">Image filtering mode:</string>
     <string name="settings_image_filtering_text">For better text recognition</string>
-    <string name="settings_image_filtering_image">For better image look</string>
+    <string name="settings_image_filtering_image">Regular</string>
 
 
     <string name="file_choose_comics_label">Comics on your device</string>

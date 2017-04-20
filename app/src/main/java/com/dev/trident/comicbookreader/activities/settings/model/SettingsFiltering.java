@@ -1,4 +1,4 @@
-package com.dev.trident.comicbookreader.activities.settings.presenter;
+package com.dev.trident.comicbookreader.activities.settings.model;
 
 /**
  * trident 15/04/2017.

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ComicBookReader</string>
+
+    <string name="activity_about">à propos de cette app</string>
+    <string name="activity_file_choose">Choisir le fichier</string>
+    <string name="activity_main">ComicBookReader</string>
+    <string name="activity_multipage">Mode plusieurs pages</string>
+    <string name="activity_settings">Préférnces</string>
+
+
+    <string name="fragment_multipage">Fragment plusieurs pages</string>
+    <string name="fragment_navigation_tab">Fragment de navigation</string>
+    <string name="fragment_singlepage">Fragment seule page</string>
+
+    <string name="drawer_item_other">Autre</string>
+    <string name="drawer_item_open_file">Ouvrir le  fichier</string>
+    <string name="drawer_item_settings">Préférnces</string>
+    <string name="drawer_item_about_this_app">à propos de cette app</string>
+    <string name="drawer_item_exit">Quitter</string>
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
+    <string name="label_multipage_view">Mode plusieurs pages</string>
+    <string name="label_singlepage_view">Mode seule page</string>
+    <string name="label_no_document">Rien est ouvert. Ouvrez le navigation drawer pour choisir un fichier.</string>
+
+    <string name="menu_item_switch_mode">Changer le mode</string>
+
+
+    <string name="dialog_exit_message">êtes-vous sûr que vous voulez quitter l\'application?</string>
+    <string name="dialog_button_exit">Quitter</string>
+    <string name="action_button_cancel">Rester</string>
+
+    <string name="about_license">Cette application à été creé à l\'ENSTA ParisTech comme le projet de IN204</string>
+    <string name="about_author_title">Autheur:</string>
+    <string name="about_author">Andrii Dychka</string>
+    <string name="about_github_title">Github:</string>
+    <string name="about_github">https://github.com/trident2710</string>
+
+    <string name="settings_image_filtering_title">Mode de filtrage de redimensionnement:</string>
+    <string name="settings_image_filtering_text">Pour meilleure reconnaissance de text</string>
+    <string name="settings_image_filtering_image">Ordinaire</string>
+
+
+    <string name="file_choose_comics_label">Comics dans votre portable</string>
+    <string name="permission_canceled_message">Permission de lire votre stockage à été rejetté</string>
+</resources>

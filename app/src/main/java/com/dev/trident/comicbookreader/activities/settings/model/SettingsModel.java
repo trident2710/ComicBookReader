@@ -2,8 +2,6 @@ package com.dev.trident.comicbookreader.activities.settings.model;
 
 import android.content.Context;
 
-import com.dev.trident.comicbookreader.activities.settings.presenter.SettingsFiltering;
-
 /**
  * trident 13/04/2017.
  *
@@ -17,7 +15,7 @@ public interface SettingsModel {
     /**
      * get current filtering saved in settings
      * @return current filtering saved in settings
-     * @see com.dev.trident.comicbookreader.activities.settings.presenter.SettingsFiltering
+     * @see SettingsFiltering
      */
     SettingsFiltering getCurrentFiltering(Context context);
 

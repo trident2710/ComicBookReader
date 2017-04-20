@@ -24,7 +24,11 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.dev.trident.comicbookreader.R;
+import com.dev.trident.comicbookreader.activities.settings.model.PreferenceManager;
+import com.dev.trident.comicbookreader.activities.settings.model.SettingsFiltering;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
 import com.dev.trident.comicbookreader.other.Constants;
 import com.dev.trident.comicbookreader.other.Utils;
@@ -222,6 +226,12 @@ public class SinglepageFragment extends Fragment implements View.OnTouchListener
         return filePath;
     }
 
+    @Override
+    public void reloadPages() {
+        mViewPager.setAdapter(null);
+        mViewPager.setAdapter(mPagerAdapter);
+    }
+
 
     private void setCurrentPage(int page) {
         setCurrentPage(page, true);
@@ -269,10 +279,12 @@ public class SinglepageFragment extends Fragment implements View.OnTouchListener
             View layout = inflater.inflate(R.layout.fragment_reader_page, container, false);
 
             PageImageView pageImageView = (PageImageView) layout.findViewById(R.id.pageImageView);
+            SubsamplingScaleImageView subsamplingScaleImageView = (SubsamplingScaleImageView)layout.findViewById(R.id.pageImageViewBetterQuality);
             if (mPageViewMode == Constants.PageViewMode.ASPECT_FILL)
                 pageImageView.setTranslateToRightEdge(!mIsLeftToRight);
             pageImageView.setViewMode(mPageViewMode);
             pageImageView.setOnTouchListener(SinglepageFragment.this);
+            subsamplingScaleImageView.setOnTouchListener(SinglepageFragment.this);
 
             container.addView(layout);
 
@@ -320,6 +332,10 @@ public class SinglepageFragment extends Fragment implements View.OnTouchListener
                 .into(t);
     }
 
+    private boolean isPreferenceTextQuality(){
+        return PreferenceManager.getInstance().getSavedFiltering(getActivity())== SettingsFiltering.TEXT;
+    }
+
     private class MyTarget implements Target, View.OnClickListener {
         private WeakReference<View> mLayout;
         public final int position;
@@ -331,7 +347,11 @@ public class SinglepageFragment extends Fragment implements View.OnTouchListener
 
         private void setVisibility(int imageView, int progressBar, int reloadButton) {
             View layout = mLayout.get();
-            layout.findViewById(R.id.pageImageView).setVisibility(imageView);
+            if(isPreferenceTextQuality())
+                layout.findViewById(R.id.pageImageViewBetterQuality).setVisibility(imageView);
+            else
+                layout.findViewById(R.id.pageImageView).setVisibility(imageView);
+
             layout.findViewById(R.id.pageProgressBar).setVisibility(progressBar);
             layout.findViewById(R.id.reloadButton).setVisibility(reloadButton);
         }
@@ -343,8 +363,14 @@ public class SinglepageFragment extends Fragment implements View.OnTouchListener
                 return;
 
             setVisibility(View.VISIBLE, View.GONE, View.GONE);
-            ImageView iv = (ImageView) layout.findViewById(R.id.pageImageView);
-            iv.setImageBitmap(bitmap);
+            if(isPreferenceTextQuality()){
+                SubsamplingScaleImageView iv = (SubsamplingScaleImageView) layout.findViewById(R.id.pageImageViewBetterQuality);
+                iv.setImage(ImageSource.bitmap(bitmap));
+            } else {
+                ImageView iv = (ImageView) layout.findViewById(R.id.pageImageView);
+                iv.setImageBitmap(bitmap);
+            }
+
         }
 
         @Override
