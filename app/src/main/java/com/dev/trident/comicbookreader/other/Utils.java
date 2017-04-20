@@ -121,6 +121,10 @@ public final class Utils {
         return filename.toLowerCase().matches(".*\\.(jpg|jpeg|bmp|gif|png|webp)$");
     }
 
+    public static boolean isOSspecific(String filename){
+        return filename.contains("MACOSX");
+    }
+
     public static boolean isZip(String filename) {
         return filename.toLowerCase().matches(".*\\.(zip|cbz)$");
     }

@@ -1,14 +1,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dev.trident.comicbookreader.fragments.multiplepageview.MultipageFragment">
+    tools:context="com.dev.trident.comicbookreader.fragments.reader.MultipageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:gravity="center"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/fragment_multipage" />
+        android:layout_height="match_parent">
+        <com.pixplicity.multiviewpager.MultiViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:matchChildWidth="@+id/pageImageView"
+            />
+    </RelativeLayout>
+
+
 
 </FrameLayout>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.pixplicity.multiviewpager/library/1.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.pixplicity.multiviewpager/library/1.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar:///usr/local/Cellar/gradle/2.9/libexec/caches/modules-2/files-2.1/com.pixplicity.multiviewpager/library/1.0/bee2b9cef160c91c3808a4c1ee8d9ad64b4d3646/library-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

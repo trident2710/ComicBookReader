@@ -1,6 +1,7 @@
 package com.dev.trident.comicbookreader.activities.settings;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
@@ -45,7 +46,13 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView,
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        NavUtils.navigateUpFromSameTask(this);
+        //NavUtils.navigateUpFromSameTask(this);
+        if (item.getItemId()== android.R.id.home) {
+            Intent intent = NavUtils.getParentActivityIntent(this);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            NavUtils.navigateUpTo(this, intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

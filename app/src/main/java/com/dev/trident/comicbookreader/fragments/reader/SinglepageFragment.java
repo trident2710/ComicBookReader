@@ -12,6 +12,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -23,8 +24,8 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-
 import com.dev.trident.comicbookreader.R;
+import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
 import com.dev.trident.comicbookreader.other.Constants;
 import com.dev.trident.comicbookreader.other.Utils;
 import com.dev.trident.comicbookreader.other.archive.ArchiveReaderFactory;
@@ -37,16 +38,13 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 
 
-public class ReaderFragment extends Fragment implements View.OnTouchListener,ReaderFragmentView{
+public class SinglepageFragment extends Fragment implements View.OnTouchListener,ReaderFragmentView{
 
-    public static final String PARAM_HANDLER = "PARAM_HANDLER";
-
-    public static final String STATE_FULLSCREEN = "STATE_FULLSCREEN";
+    public static final String PARAM_FILE_PATH = "ReaderFragment.FilePath";
 
     private ComicViewPager mViewPager;
     private ComicPagerAdapter mPagerAdapter;
@@ -66,18 +64,16 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
     private SparseArray<Target> mTargets = new SparseArray<>();
 
 
-    public static ReaderFragment create(int comicId) {
-        ReaderFragment fragment = new ReaderFragment();
-        Bundle args = new Bundle();
-        args.putInt(PARAM_HANDLER, comicId);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    String filePath;
 
-    public static ReaderFragment create(File comicpath) {
-        ReaderFragment fragment = new ReaderFragment();
+    private OnFragmentInteractionListener mListener;
+
+
+
+    public static SinglepageFragment create(String comicpath) {
+        SinglepageFragment fragment = new SinglepageFragment();
         Bundle args = new Bundle();
-        args.putSerializable(PARAM_HANDLER, comicpath);
+        args.putString(PARAM_FILE_PATH, comicpath);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +85,9 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
         Bundle bundle = getArguments();
 
         File file = null;
-        file = (File) bundle.getSerializable(PARAM_HANDLER);
+        String path =  bundle.getString(PARAM_FILE_PATH);
+        filePath = path;
+        file = new File(path);
 
         try {
             mParser = ArchiveReaderFactory.getReader(file.getPath());
@@ -148,10 +146,13 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
             public void onPageSelected(int position) {
                 if (mIsLeftToRight) {
                     setCurrentPage(position + 1);
+                    mListener.onSinglePageModePageSelected(position + 1);
                 }
                 else {
                     setCurrentPage(mViewPager.getAdapter().getCount() - position);
+                    mListener.onSinglePageModePageSelected(mViewPager.getAdapter().getCount() - position);
                 }
+
             }
         });
 
@@ -161,25 +162,23 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
             mCurrentPage = -1;
         }
 
-        if (savedInstanceState != null) {
-            boolean fullscreen = savedInstanceState.getBoolean(STATE_FULLSCREEN);
-            setFullscreen(fullscreen);
+        setFullscreen(false);
 
-        }
-        else {
-            setFullscreen(true);
-        }
         getActivity().setTitle(mFilename);
 
 
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
+
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(STATE_FULLSCREEN, isFullscreen());
         super.onSaveInstanceState(outState);
     }
 
@@ -205,11 +204,22 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
         return mGestureDetector.onTouchEvent(event);
     }
 
+    @Override
     public int getCurrentPage() {
         if (mIsLeftToRight)
             return mViewPager.getCurrentItem() + 1;
         else
             return mViewPager.getAdapter().getCount() - mViewPager.getCurrentItem();
+    }
+
+    @Override
+    public void moveToPage(int page) {
+        setCurrentPage(page);
+    }
+
+    @Override
+    public String getFilePath() {
+        return filePath;
     }
 
 
@@ -228,6 +238,11 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
         }
 
 
+    }
+
+    @Override
+    public int getPageCount() {
+        return mParser.getPageCount();
     }
 
     private class ComicPagerAdapter extends PagerAdapter {
@@ -257,7 +272,7 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
             if (mPageViewMode == Constants.PageViewMode.ASPECT_FILL)
                 pageImageView.setTranslateToRightEdge(!mIsLeftToRight);
             pageImageView.setViewMode(mPageViewMode);
-            pageImageView.setOnTouchListener(ReaderFragment.this);
+            pageImageView.setOnTouchListener(SinglepageFragment.this);
 
             container.addView(layout);
 
@@ -399,26 +414,13 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
         }
     }
 
-    private void updatePageViews(ViewGroup parentView) {
-        for (int i = 0; i < parentView.getChildCount(); i++) {
-            final View child = parentView.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                updatePageViews((ViewGroup)child);
-            }
-            else if (child instanceof PageImageView) {
-                PageImageView view = (PageImageView) child;
-                if (mPageViewMode == Constants.PageViewMode.ASPECT_FILL)
-                    view.setTranslateToRightEdge(!mIsLeftToRight);
-                view.setViewMode(mPageViewMode);
-            }
-        }
-    }
 
     private ActionBar getActionBar() {
         return ((AppCompatActivity)getActivity()).getSupportActionBar();
     }
 
     private void setFullscreen(boolean fullscreen) {
+        mListener.onFullscreenMode(fullscreen);
         setFullscreen(fullscreen, false);
     }
 
@@ -470,12 +472,37 @@ public class ReaderFragment extends Fragment implements View.OnTouchListener,Rea
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof NavigationTabFragment.OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     private boolean isFullscreen() {
         return mIsFullscreen;
     }
 
 
+    public interface OnFragmentInteractionListener {
+        /**
+         * notify the host activity that this view has entered/exited the fullscreen mode
+         * @param fullscreenMode - indicate the fullscreen state
+         */
+        void onFullscreenMode(boolean fullscreenMode);
 
+        void onSinglePageModePageSelected(int page);
+    }
 
 
 

@@ -2,7 +2,6 @@ package com.dev.trident.comicbookreader.activities.main;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +11,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,21 +20,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.dev.trident.comicbookreader.MVPBasic.MessageType;
 import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.activities.about.AboutActivity;
 import com.dev.trident.comicbookreader.activities.main.view.MainView;
-import com.dev.trident.comicbookreader.activities.multipage.MultipageActivity;
 import com.dev.trident.comicbookreader.activities.settings.SettingsActivity;
-import com.dev.trident.comicbookreader.fragments.reader.ReaderFragment;
+import com.dev.trident.comicbookreader.fragments.reader.MultipageFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragmentView;
+import com.dev.trident.comicbookreader.fragments.reader.SinglepageFragment;
+import com.dev.trident.comicbookreader.fragments.reader.ReaderFragmentView;
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.clans.fab.FloatingActionButton;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -47,7 +46,9 @@ import droidninja.filepicker.FilePickerConst;
 
 public class MainActivity extends AppCompatActivity implements MainView,
         NavigationView.OnNavigationItemSelectedListener,
-        NavigationTabFragment.OnFragmentInteractionListener {
+        NavigationTabFragment.OnFragmentInteractionListener,
+        SinglepageFragment.OnFragmentInteractionListener,
+        MultipageFragment.OnFragmentInteractionListener{
 
     @Bind(R.id.clMainActivity)
     CoordinatorLayout coordinatorLayout;
@@ -61,8 +62,21 @@ public class MainActivity extends AppCompatActivity implements MainView,
     FloatingActionButton fabNavigation;
     @Bind(R.id.frNavigationMainActivity)
     FrameLayout navigationTabFragmentView;
+    @Bind(R.id.frReader)
+    FrameLayout readerLayout;
+    @Bind(R.id.frReaderMultiple)
+    FrameLayout multipleReaderLayout;
+    @Bind(R.id.nothing)
+    RelativeLayout backgroundNoFiles;
 
     NavigationTabFragmentView navigationTabFragment;
+    ReaderFragmentView readerFragment;
+    ReaderFragmentView multipageFragment;
+
+    boolean currentViewMode  = false;
+
+    String filePath;
+    boolean shouldCreateFragments = false;
 
 
     /**
@@ -88,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 .replace(R.id.frNavigationMainActivity, (Fragment) navigationTabFragment)
                 .commit();
 
+//        SinglepageFragment fragment = SinglepageFragment.create("/storage/emulated/0/Download/sample.cbr");
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.frReader,fragment)
+//                .commit();
+
+
     }
 
     @Override
@@ -97,12 +118,29 @@ public class MainActivity extends AppCompatActivity implements MainView,
         Utils.setScreenOrientationLocked(this,true);
         init();
 
-        ReaderFragment fragment = ReaderFragment.create(new File("/storage/emulated/0/Download/sample.cbr"));
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frReader,fragment)
-                .commit();
+
+        if(savedInstanceState!=null)
+        if(savedInstanceState.containsKey(ARG_FILE_PATH)){
+            filePath = savedInstanceState.getString(ARG_FILE_PATH);
+        }
     }
+
+    @Override
+    protected void onResume(){
+        if(shouldCreateFragments&&filePath!=null&&!filePath.isEmpty()){
+            createFragments(filePath);
+            shouldCreateFragments = false;
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state){
+        state.putString(ARG_FILE_PATH,filePath);
+        super.onSaveInstanceState(state);
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,7 +158,10 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 return true;
             case R.id.menu_item_switch_mode:
                 //Toast.makeText(this,"Switch mode",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, MultipageActivity.class));
+                currentViewMode = !currentViewMode;
+                item.setIcon(!currentViewMode?R.drawable.ic_menu_switch_mode_multiple:R.drawable.ic_menu_switch_mode_single);
+                switchBetweenReaderViewMode(currentViewMode);
+                showMessage(MessageType.MESSAGE,currentViewMode?R.string.label_multipage_view:R.string.label_singlepage_view);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -146,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 return true;
             case R.id.drawer_item_settings:
                 //Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
                 return true;
             case R.id.drawer_item_about_this_app:
                 //Toast.makeText(this,"About app",Toast.LENGTH_SHORT).show();
@@ -164,8 +205,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
     void onFabNavigationClicked(){
         if(navigationTabFragmentView.getVisibility()== View.GONE){
             Toast.makeText(this,"Navigation",Toast.LENGTH_SHORT).show();
-            navigationTabFragment.initWithPageCount(10);
-            navigationTabFragment.setCurrentPage(4);
+            ReaderFragmentView v = currentViewMode?multipageFragment:readerFragment;
+            if(v!=null){
+                navigationTabFragment.initWithPageCount(v.getPageCount());
+                navigationTabFragment.setCurrentPage(v.getCurrentPage());
+
+            }
+
         }
         navigationTabFragmentView.setVisibility(navigationTabFragmentView.getVisibility()==View.VISIBLE?View.GONE:View.VISIBLE);
     }
@@ -202,25 +248,46 @@ public class MainActivity extends AppCompatActivity implements MainView,
         Toast.makeText(this,getString(msgStringId),Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode)
         {
-
             case FilePickerConst.REQUEST_CODE_DOC:
                 if(resultCode== Activity.RESULT_OK && data!=null)
                 {
-                    ArrayList<String> docPaths = new ArrayList<>();
+                    final ArrayList<String> docPaths = new ArrayList<>();
                     docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+                    filePath = docPaths.get(0);
+                    shouldCreateFragments = true;
+
                     Log.d(TAG,"path: "+docPaths.get(0));
-                    //mainPresenter.requestOpenFile(MainActivity.this,docPaths.get(0));
+
+                    //createFragments(filePath);
 
 
                 }
                 break;
         }
+
     }
+
+    void createFragments(String filePath){
+        readerFragment = SinglepageFragment.create(filePath);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frReader,(Fragment)readerFragment)
+                .commit();
+
+        multipageFragment = MultipageFragment.create(filePath);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frReaderMultiple,(Fragment)multipageFragment)
+                .commit();
+
+        backgroundNoFiles.setVisibility(View.GONE);
+    }
+
+
 
     void requestReadFilesPermission(){
         ActivityCompat.requestPermissions(MainActivity.this,
@@ -250,15 +317,48 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //super.onSaveInstanceState(outState);
-    }
-
-
     @Override
     public void onPageSelected(int pageNum) {
-        Toast.makeText(this,"Page selected "+pageNum,Toast.LENGTH_SHORT).show();
+        Log.d("page",""+pageNum);
+        if(!currentViewMode) {
+            if (readerFragment != null)
+                readerFragment.moveToPage(pageNum);
+        }
+        else {
+            if (multipageFragment != null)
+                multipageFragment.moveToPage(pageNum);
+        }
+    }
+
+    @Override
+    public void onFullscreenMode(boolean fullscreenMode) {
+        fabNavigation.setVisibility(!fullscreenMode?View.VISIBLE:View.GONE);
+    }
+
+    @Override
+    public void onSinglePageModePageSelected(int page) {
+        if(!currentViewMode){
+            navigationTabFragment.initWithPageCount(readerFragment.getPageCount());
+            navigationTabFragment.setCurrentPage(readerFragment.getCurrentPage());
+        }
+    }
+
+    void switchBetweenReaderViewMode(boolean viewModeMultiple){
+        multipleReaderLayout.setVisibility(viewModeMultiple?View.VISIBLE:View.GONE);
+        readerLayout.setVisibility(!viewModeMultiple?View.VISIBLE:View.GONE);
+
+        ReaderFragmentView v = currentViewMode?multipageFragment:readerFragment;
+        if(v!=null){
+            navigationTabFragment.initWithPageCount(v.getPageCount());
+            navigationTabFragment.setCurrentPage(v.getCurrentPage());
+        }
+    }
+
+    @Override
+    public void onMultiPageModePageSelected(int page) {
+        if(currentViewMode){
+            navigationTabFragment.initWithPageCount(multipageFragment.getPageCount());
+            navigationTabFragment.setCurrentPage(multipageFragment.getCurrentPage());
+        }
     }
 }

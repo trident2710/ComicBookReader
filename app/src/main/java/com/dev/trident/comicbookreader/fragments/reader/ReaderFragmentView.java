@@ -5,5 +5,8 @@ package com.dev.trident.comicbookreader.fragments.reader;
  */
 
 public interface ReaderFragmentView {
-
+    int getPageCount();
+    int getCurrentPage();
+    void moveToPage(int page);
+    String getFilePath();
 }

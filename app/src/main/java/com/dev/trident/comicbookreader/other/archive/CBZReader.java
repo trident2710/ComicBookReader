@@ -1,5 +1,7 @@
 package com.dev.trident.comicbookreader.other.archive;
 
+import android.util.Log;
+
 import com.dev.trident.comicbookreader.other.Utils;
 
 import java.io.IOException;
@@ -52,7 +54,8 @@ public class CBZReader extends ComicsReader {
         Enumeration<? extends ZipEntry> e = mZipFile.entries();
         while (e.hasMoreElements()) {
             ZipEntry ze = e.nextElement();
-            if (!ze.isDirectory() && Utils.isImage(ze.getName())) {
+            Log.d("zip",ze.toString());
+            if (!ze.isDirectory() && Utils.isImage(ze.getName()) && !Utils.isOSspecific(ze.getName())) {
                 mEntries.add(ze);
             }
         }

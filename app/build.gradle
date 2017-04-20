@@ -43,4 +43,5 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.minimize.library:seekbar-compat:0.2.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.pixplicity.multiviewpager:library:1.0'
 }
