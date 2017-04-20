@@ -46,7 +46,6 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView,
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //NavUtils.navigateUpFromSameTask(this);
         if (item.getItemId()== android.R.id.home) {
             Intent intent = NavUtils.getParentActivityIntent(this);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

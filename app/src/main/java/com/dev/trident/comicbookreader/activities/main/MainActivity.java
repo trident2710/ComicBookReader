@@ -6,16 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,11 +25,11 @@ import com.dev.trident.comicbookreader.R;
 import com.dev.trident.comicbookreader.activities.about.AboutActivity;
 import com.dev.trident.comicbookreader.activities.main.view.MainView;
 import com.dev.trident.comicbookreader.activities.settings.SettingsActivity;
-import com.dev.trident.comicbookreader.fragments.reader.MultipageFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragment;
 import com.dev.trident.comicbookreader.fragments.navigationtab.NavigationTabFragmentView;
-import com.dev.trident.comicbookreader.fragments.reader.SinglepageFragment;
+import com.dev.trident.comicbookreader.fragments.reader.MultipageFragment;
 import com.dev.trident.comicbookreader.fragments.reader.ReaderFragmentView;
+import com.dev.trident.comicbookreader.fragments.reader.SinglepageFragment;
 import com.dev.trident.comicbookreader.other.Utils;
 import com.github.clans.fab.FloatingActionButton;
 
@@ -50,14 +47,10 @@ public class MainActivity extends AppCompatActivity implements MainView,
         SinglepageFragment.OnFragmentInteractionListener,
         MultipageFragment.OnFragmentInteractionListener{
 
-    @Bind(R.id.clMainActivity)
-    CoordinatorLayout coordinatorLayout;
     @Bind(R.id.dlMainActivity)
     DrawerLayout drawerLayout;
     @Bind(R.id.nvMainActivity)
     NavigationView navigationView;
-    @Bind(R.id.vpMainActivity)
-    ViewPager viewPager;
     @Bind(R.id.fabNavigationMainActivity)
     FloatingActionButton fabNavigation;
     @Bind(R.id.frNavigationMainActivity)
@@ -77,13 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     String filePath;
     boolean shouldCreateFragments = false;
-    boolean settingsChanged = false;
+    boolean settingsChanged = false;  //to indicate that settings were changed
 
 
-    /**
-     * Initialisation of key components of this activity
-     * Should be called in onCreate()
-     */
     public void init(){
         ButterKnife.bind(this);
         requestReadFilesPermission();
@@ -102,13 +91,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 .beginTransaction()
                 .replace(R.id.frNavigationMainActivity, (Fragment) navigationTabFragment)
                 .commit();
-
-//        SinglepageFragment fragment = SinglepageFragment.create("/storage/emulated/0/Download/sample.cbr");
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frReader,fragment)
-//                .commit();
-
 
     }
 
@@ -192,16 +174,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
                 return true;
             case R.id.drawer_item_settings:
-                //Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this,SettingsActivity.class));
                 settingsChanged = true;
                 return true;
             case R.id.drawer_item_about_this_app:
-                //Toast.makeText(this,"About app",Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 return true;
             case R.id.drawer_item_exit:
-                //Toast.makeText(this,"Exit",Toast.LENGTH_SHORT).show();
                 showExitDialog();
                 return true;
         }
@@ -211,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
     @OnClick(R.id.fabNavigationMainActivity)
     void onFabNavigationClicked(){
         if(navigationTabFragmentView.getVisibility()== View.GONE){
-            Toast.makeText(this,"Navigation",Toast.LENGTH_SHORT).show();
             ReaderFragmentView v = currentViewMode?multipageFragment:readerFragment;
             if(v!=null){
                 navigationTabFragment.initWithPageCount(v.getPageCount());
@@ -246,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
-
     public void showMessage(MessageType type, String msg) {
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
@@ -260,18 +237,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
         switch (requestCode)
         {
             case FilePickerConst.REQUEST_CODE_DOC:
-                if(resultCode== Activity.RESULT_OK && data!=null)
-                {
+                if(resultCode== Activity.RESULT_OK && data!=null){
                     final ArrayList<String> docPaths = new ArrayList<>();
                     docPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
                     filePath = docPaths.get(0);
-                    shouldCreateFragments = true;
-
-                    Log.d(TAG,"path: "+docPaths.get(0));
-
-                    //createFragments(filePath);
-
-
+                    shouldCreateFragments = true; // after this the fragments will be created in onResume
+                    //in fact it's the workaround of IllegalStateException
                 }
                 break;
         }
@@ -295,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
-
     void requestReadFilesPermission(){
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MAIN_ACTIVITY_REQUEST_PERMISSION);
@@ -309,24 +279,18 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted and now can proceed
 
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                     Toast.makeText(MainActivity.this, this.getString(R.string.permission_canceled_message), Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
-            // add other cases for more permissions
         }
     }
 
 
     @Override
     public void onPageSelected(int pageNum) {
-        Log.d("page",""+pageNum);
         if(!currentViewMode) {
             if (readerFragment != null)
                 readerFragment.moveToPage(pageNum);

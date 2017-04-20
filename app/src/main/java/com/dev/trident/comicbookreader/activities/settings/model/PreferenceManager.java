@@ -25,6 +25,13 @@ public final class PreferenceManager {
         editor.putString(PREFERENCE_PAGE_FILTERING, setting.name());
         editor.apply();
     }
+
+    /**
+     * Get the filtering chosen by user in Settings
+     * @see SettingsFiltering
+     * @param ctx
+     * @return
+     */
     public SettingsFiltering getSavedFiltering(Context ctx){
         return getSharedPreferences(ctx).getString(PREFERENCE_PAGE_FILTERING,SettingsFiltering.IMAGE.name()).
                 equals(SettingsFiltering.IMAGE.name())?SettingsFiltering.IMAGE:SettingsFiltering.TEXT;

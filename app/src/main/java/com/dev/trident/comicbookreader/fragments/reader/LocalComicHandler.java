@@ -12,7 +12,11 @@ import com.squareup.picasso.RequestHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-
+/**
+ * the request handler to load the bitmap using picasso
+ * @see Picasso
+ *
+ */
 public class LocalComicHandler extends RequestHandler {
     private final static String HANDLER_URI = "localcomic";
     private ComicsReader mParser;
